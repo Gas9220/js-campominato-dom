@@ -1,0 +1,52 @@
+main {
+    flex-grow: 1;
+    background-color: #7FFFD4;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 60%;
+    height: 80%;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.box {
+    border: .0625rem solid black;
+    text-align: center;
+    position: relative;
+}
+
+.easy-box {
+    width: calc(100% / 10);
+    height: calc(100% / 10);
+}
+
+.medium-box {
+    width: calc(100% / 9);
+    height: calc(100% / 9);
+}
+
+.hard-box {
+    width: calc(100% / 7);
+    height: calc(100% / 7);
+}
+
+.box > span {
+    position: absolute;
+    height: 1.25rem;
+    width: 1.25rem;
+    font-size: 1.25rem;
+    left: calc(50% - .625rem);
+    top: calc(50% - .625rem);
+}
+
+.box-clicked {
+    color: white;
+    background-color: blue;
+}
+
+.disabled {
+    pointer-events: none;
+}

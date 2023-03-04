@@ -1,0 +1,8 @@
+footer {
+    padding: 24px;
+}
+
+footer span::after {
+    content: '\2764';
+    margin-left: .3rem;
+}
