@@ -47,6 +47,10 @@ main {
     background-color: blue;
 }
 
+.bomb-box {
+    background-color: red;
+}
+
 .disabled {
     pointer-events: none;
 }

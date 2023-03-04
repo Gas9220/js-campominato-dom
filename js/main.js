@@ -2,7 +2,7 @@
 
 // ---------- UTILS FUNCTIONS ----------
 
-// Funzione che permette di generare un numero casuale
+// Funzione che permette di generare un numero casuale (Thanks MDN)
 function randomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -52,9 +52,66 @@ function fillArrayOfNumbers(level, totNumbers) {
     return numbers;
 }
 
+// Funzione che permette di verificare se un array contiene un numero
+function isIncluded(numbers, number) {
+    // Se il numero è incluso
+    if (numbers.includes(number)) {
+        return true // ritorno true
+    }
+
+    return false // altrimenti ritorno false
+}
+
 // ------------------------------------
 
 // ---------- CORE FUNCTIONS ----------
+
+// Funzione che aggiunge la classe al box in base al livello scelto
+function setBoxWidth(level, element) {
+    // Aggiungo la classe css corrispondente al livello per formare la griglia con le righe e colonne giuste
+    switch (level) {
+        case "easy":
+            element.classList.add('easy-box');
+            break;
+        case "medium":
+            element.classList.add('medium-box');
+            break;
+        case "hard":
+            element.classList.add('hard-box');
+            break;
+        default:
+            break;
+    }
+}
+
+// Funzione che determina le operazioni da fare al click su un box
+function boxClickBehavior(bombs, boxTextContent, boxElement) {
+    // Se l'array di bombe contiene il valore del box cliccato
+    if (isIncluded(bombs, boxTextContent)) {
+        // Prendo tutti i box e il suo contenuto
+        const boxes = document.querySelectorAll('.box');
+        const boxContent = document.querySelectorAll('.box-content')
+
+        // Faccio un ciclo for sui box
+        for (let i = 0; i < boxes.length; i++) {
+            // Faccio un ciclo for sull'array di bombe
+            for (let y = 0; y < bombs.length; y++) {
+                // Aggiungo a tutti i box che hanno valore uguale alla bomba, la classe css per colorarli di rosso
+                if (bombs[y] === Number(boxContent[i].innerHTML)) {
+                    boxes[i].classList.add('bomb-box')
+                }
+            }
+            // Disabilito tutti i box
+            boxes[i].classList.add('disabled')
+        }
+    } else {
+        // se il valore cliccato non è uguale ad un valore contenuto della bomba
+        boxElement.classList.add('box-clicked'); // Cambio il background in blu
+        score++ // aumento lo score
+        scoreElement.innerHTML = `Punti: ${score}` // Aggiorno lo score a schermo
+    }
+}
+
 // Funzione che permette di creare i box
 function createBox(boxTextContent, level) {
     // Creo un div
@@ -62,20 +119,8 @@ function createBox(boxTextContent, level) {
     // Gli assegno la classe box
     boxElement.classList.add('box');
 
-    // Aggiungo la classe corrispondente al livello per formare la griglia con le righe e colonne giuste
-    switch (level) {
-        case "easy": 
-            boxElement.classList.add('easy-box');
-            break;
-        case "medium":
-            boxElement.classList.add('medium-box');
-            break;
-        case "hard":
-            boxElement.classList.add('hard-box');
-            break;
-        default:
-            break;
-    }
+    // Aggiungo al box la classe css che configura la width dei box
+    setBoxWidth(level, boxElement)
 
     // Creo uno span
     const boxSpanElement = document.createElement('span');
@@ -87,8 +132,7 @@ function createBox(boxTextContent, level) {
 
     // Aggiungo l'evento al click sul box
     boxElement.addEventListener('click', function () {
-        boxElement.classList.add('box-clicked');
-        alert(boxTextContent);
+        boxClickBehavior(bombs, boxTextContent, boxElement)
     })
 
     // Ritorno il box
@@ -96,31 +140,31 @@ function createBox(boxTextContent, level) {
 }
 
 // Funzione che permette di creare la griglia di box
-function createGrid(boxNumber, container, level) {
+function createGrid(boxNumber, container, level, bombs) {
     // Faccio un ciclo for in base a quanti box vogliamo creare
     for (let index = 1; index <= boxNumber; index++) {
         // Creo un box
-        const box = createBox(index, level);
+        const box = createBox(index, level, bombs);
         // Lo appendo al container
         container.append(box);
     }
 }
 
 // Funzione che crea la griglia in base al livello
-function performGameSettings(level, container) {
+function performGameSettings(level, container, bombs) {
     // svuoto il container se prima era stato già riempito
     container.innerHTML = "";
 
     // Faccio uno switch sul livello
     switch (level) {
         case "easy": // Se il livello è easy
-            createGrid(100, container, level);
+            createGrid(100, container, level, bombs);
             break;
         case "medium":
-            createGrid(81, container, level)
+            createGrid(81, container, level, bombs)
             break;
         case "hard":
-            createGrid(49, container, level)
+            createGrid(49, container, level, bombs)
             break;
         default:
             break;
@@ -133,6 +177,12 @@ function performGameSettings(level, container) {
 const containerElement = document.querySelector('.container');
 const playBtn = document.getElementById('play-btn');
 const selectElement = document.querySelector('select');
+
+// Array di bombe
+let bombs = [];
+
+// Punteggio utente
+let score = 0;
 
 // Azione alla pressione di playBtn
 playBtn.addEventListener('click',

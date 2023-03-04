@@ -70,4 +70,18 @@ Svolgimento seconda parte ----------------------------------
   - Se il numero non è presente nell'array, lo aggiungo
 - Ritorno l'array
 
+4. Creo una funzione che permette di verificare se un array di numeri contiene un numero
+  - Se è contenuto ritorno true
+  - Altrimenti ritorno false
+
+5. Aggiungo le funzionalità al click sul box
+  - Se il box cliccato ha un valore contenuto nell'array di bombe
+   - Mi vado a prendere i riferimenti HTML dei box e del loro contenuto
+   - Faccio un ciclo for sui box con all'interno un ciclo for sulle bombe
+    - Vado ad aggiungere la classe che colora il background di rosso ai box che contengono bombe
+   - Disabilito l'interazione sui box
+ - Altrimenti cambio in blu il background del box
+ - Aumento lo score
+ - Aggiorno l'interfaccia utente con il nuovo score
+
 ------------------------------------------------------------
