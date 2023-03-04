@@ -1,6 +1,60 @@
 'use strict';
 
-// ---------- FUNCTIONS ----------
+// ---------- UTILS FUNCTIONS ----------
+
+// Funzione che permette di generare un numero casuale
+function randomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// Funzione che permette di generare un numero intero massimo in base alla difficoltà
+function maxInt(level) {
+    // Assegno un valore massimo di default di 100
+    let maxInt = 100;
+
+    // Faccio uno switch sul livello inserito
+    switch (level) {
+        case "medium":
+            maxInt = 81; // Se il livello è medio, cambio il valore a 81
+            break;
+        case "hard":
+            maxInt = 49; // Se il livello è difficile, cambio il valore a 49
+            break;
+        default:
+            break; // Se il livello è facile il valore resta inalterato a 100
+    }
+
+    // Ritorno il valore massimo
+    return maxInt;
+}
+
+// Funzione che permette di riempire un array con un tot di numeri casuali
+function fillArrayOfNumbers(level, totNumbers) {
+    // Creo una costante che contiene il numero più alto che è possibile nell'array
+    const maxInt = maxInt(level);
+
+    // Creo un array che conterra i numeri casuali
+    let numbers = [];
+
+    // Eseguo queste operazioni....
+    do {
+        // Creo un numero casuale da 1 al massimo intero
+        const randomNumber = randomInt(1, maxInt);
+        // Se l'array non contiene già il numero, lo aggiungo
+        if (!numbers.includes(randomNumber)) {
+            numbers.push(randomNumber);
+        }
+    } while (numbers.length < totNumbers); // ...finchè la lunghezza dell'array non raggiunge il valore desiderato
+
+    // Ritorno l'array di numeri
+    return numbers;
+}
+
+// ------------------------------------
+
+// ---------- CORE FUNCTIONS ----------
 // Funzione che permette di creare i box
 function createBox(boxTextContent, level) {
     // Creo un div
