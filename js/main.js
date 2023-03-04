@@ -34,7 +34,7 @@ function maxInt(level) {
 function fillArrayOfNumbers(level, totNumbers) {
     // Creo una costante che contiene il numero più alto che è possibile nell'array
     const max = maxInt(level);
-
+    maxChoices = max;
     // Creo un array che conterra i numeri casuali
     let numbers = [];
 
@@ -62,6 +62,15 @@ function isIncluded(numbers, number) {
     return false // altrimenti ritorno false
 }
 
+// Funzione che dati due numeri, ritorna true quando la loro differenza è un determinato numero
+function numbersDifference(num1, num2, difference) {
+    if (num1 - num2 === difference) {
+        return true
+    }
+
+    return false
+}
+
 // ------------------------------------
 
 // ---------- CORE FUNCTIONS ----------
@@ -86,11 +95,13 @@ function setBoxWidth(level, element) {
 
 // Funzione che determina le operazioni da fare al click su un box
 function boxClickBehavior(bombs, boxTextContent, boxElement) {
+    const boxes = document.querySelectorAll('.box');
     // Se l'array di bombe contiene il valore del box cliccato
     if (isIncluded(bombs, boxTextContent)) {
-        // Prendo tutti i box e il suo contenuto
-        const boxes = document.querySelectorAll('.box');
         const boxContent = document.querySelectorAll('.box-content');
+
+        messageElement.innerHTML = `Hai perso. Il tuo punteggio è di: ${score} punti`;
+        messageElement.classList.remove('hidden')
 
         // Faccio un ciclo for sui box
         for (let i = 0; i < boxes.length; i++) {
@@ -102,13 +113,26 @@ function boxClickBehavior(bombs, boxTextContent, boxElement) {
                 }
             }
             // Disabilito tutti i box
-            boxes[i].classList.add('disabled');
+            boxes[i].classList.add('disabled', 'half-opacity');
         }
     } else {
-        // se il valore cliccato non è uguale ad un valore contenuto della bomba
-        boxElement.classList.add('box-clicked'); // Cambio il background in blu
-        score++; // aumento lo score
-        scoreElement.innerHTML = `Punti: ${score}`; // Aggiorno lo score a schermo
+        if (numbersDifference(maxChoices, userChoices, 17)) {
+            score++; // aumento lo score
+            userChoices += 1; // aumento il numero di scelte
+            scoreElement.innerHTML = `Punti: ${score}`; // Aggiorno lo score a schermo
+            boxElement.classList.add('box-clicked'); // Cambio il background in blu
+            messageElement.innerHTML = `Congratulazioni, hai evitato tutte le bombe! Hai accumulato: ${score} punti`;
+            messageElement.classList.remove('hidden');
+            for (let i = 0; i < boxes.length; i++) {
+                boxes[i].classList.add('disabled', 'half-opacity');
+            }
+        } else {
+            // se il valore cliccato non è uguale ad un valore contenuto della bomba
+            boxElement.classList.add('box-clicked', 'disabled'); // Cambio il background in blu
+            score++; // aumento lo score
+            userChoices++ // aumento il numero di scelte
+            scoreElement.innerHTML = `Punti: ${score}`; // Aggiorno lo score a schermo
+        }
     }
 }
 
@@ -157,7 +181,7 @@ function performGameSettings(level, container, bombs) {
     reset(container);
 
     // Abilito lo switch debug
-    switchElement.classList.remove('disabled');
+    switchElement.classList.remove('disabled', 'half-opacity');
 
     // Faccio uno switch sul livello
     switch (level) {
@@ -177,9 +201,12 @@ function performGameSettings(level, container, bombs) {
 
 function reset(container) {
     score = 0; // Azzero lo score
+    userChoices = 0
     container.innerHTML = ""; // Azzero i box
     debugElement.checked = false
-    switchElement.classList.add('disabled');
+    switchElement.classList.add('disabled', 'half-opacity');
+    messageElement.classList.add('hidden')
+    scoreElement.innerHTML = `Punti: ${score}`;
 }
 
 function debugModeOn(bombs) {
@@ -192,8 +219,8 @@ function debugModeOn(bombs) {
                 boxes[i].classList.add('debug')
             } else {
                 boxes[i].classList.remove('debug')
-            }    
-        }        
+            }
+        }
     }
 }
 
@@ -206,12 +233,16 @@ const selectElement = document.querySelector('select');
 const scoreElement = document.getElementById('score');
 const debugElement = document.getElementById('debug');
 const switchElement = document.querySelector('.switch');
+const messageElement = document.querySelector('.message');
 
 // Punteggio utente
 let score = 0;
 
 // Array di bombe
 let bombs = []
+
+let userChoices = 0
+let maxChoices = 0
 
 // Azione alla pressione di playBtn
 playBtn.addEventListener('click',
@@ -221,11 +252,12 @@ playBtn.addEventListener('click',
         console.log(bombs);
         // Chiamo la funzione passandogli il livello e il container a cui appendere i box
         performGameSettings(selectElement.value, containerElement, bombs);
+        
     }
 )
 
 debugElement.addEventListener('click',
-    function() {
-        debugModeOn(bombs)
+    function () {
+        debugModeOn(bombs);
     }
- )
+)
