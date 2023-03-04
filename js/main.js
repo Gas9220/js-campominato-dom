@@ -152,13 +152,13 @@ function createGrid(boxNumber, container, level, bombs) {
 }
 
 // Funzione che crea la griglia in base al livello
-function performGameSettings(level, container) {
+function performGameSettings(level, container, bombs) {
     // faccio un reset
     reset(container);
 
-    // Creo l'array che contiene le bombe
-    const bombs = fillArrayOfNumbers(level, 16)
-    console.log(bombs)
+    // Abilito lo switch debug
+    switchElement.classList.remove('disabled');
+
     // Faccio uno switch sul livello
     switch (level) {
         case "easy": // Se il livello è easy
@@ -178,6 +178,23 @@ function performGameSettings(level, container) {
 function reset(container) {
     score = 0; // Azzero lo score
     container.innerHTML = ""; // Azzero i box
+    debugElement.checked = false
+    switchElement.classList.add('disabled');
+}
+
+function debugModeOn(bombs) {
+    const boxes = document.querySelectorAll('.box');
+    const boxContent = document.querySelectorAll('.box-content');
+
+    for (let i = 0; i < boxes.length; i++) {
+        for (let y = 0; y < bombs.length; y++) {
+            if ((isIncluded(bombs, Number(boxContent[i].innerHTML)) && (debugElement.checked === true))) {
+                boxes[i].classList.add('debug')
+            } else {
+                boxes[i].classList.remove('debug')
+            }    
+        }        
+    }
 }
 
 // -------------------------------
@@ -187,14 +204,28 @@ const containerElement = document.querySelector('.container');
 const playBtn = document.getElementById('play-btn');
 const selectElement = document.querySelector('select');
 const scoreElement = document.getElementById('score');
+const debugElement = document.getElementById('debug');
+const switchElement = document.querySelector('.switch');
 
 // Punteggio utente
 let score = 0;
 
+// Array di bombe
+let bombs = []
+
 // Azione alla pressione di playBtn
 playBtn.addEventListener('click',
     function () {
+        // Riempio l'array di bombe
+        bombs = fillArrayOfNumbers(selectElement.value, 16)
+        console.log(bombs);
         // Chiamo la funzione passandogli il livello e il container a cui appendere i box
-        performGameSettings(selectElement.value, containerElement);
+        performGameSettings(selectElement.value, containerElement, bombs);
     }
 )
+
+debugElement.addEventListener('click',
+    function() {
+        debugModeOn(bombs)
+    }
+ )

@@ -53,4 +53,9 @@ main {
 
 .disabled {
     pointer-events: none;
+    opacity: 0.5;
+}
+
+.debug {
+    background-color: pink; import
 }
