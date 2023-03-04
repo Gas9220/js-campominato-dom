@@ -1,5 +1,4 @@
 nav {
-    align-items: center;
     padding: 1rem;
 }
 
@@ -8,7 +7,6 @@ nav button {
 }
 
 nav label {
-    margin-left: auto;
     margin-right: 0.5rem;
 }
 

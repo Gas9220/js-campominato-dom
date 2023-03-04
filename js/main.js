@@ -158,7 +158,7 @@ function performGameSettings(level, container) {
 
     // Creo l'array che contiene le bombe
     const bombs = fillArrayOfNumbers(level, 16)
-
+    console.log(bombs)
     // Faccio uno switch sul livello
     switch (level) {
         case "easy": // Se il livello è easy

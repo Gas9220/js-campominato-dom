@@ -16,16 +16,25 @@
 <body class="flex">
     <!-- Header -->
     <header>
-        <nav class="flex">
-            <img src="img/logo-boolean.png" alt="logo" id="logo">
-            <h2>Campo minato</h2>
-            <label for="difficulty-select">Difficulty:</label>
-            <select name="difficulty" id="difficulty-select">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-            <button id="play-btn">Play</button>
+        <nav class="flex j-space-between align-center">
+            <div class="flex align-center">
+                <img src="img/logo-boolean.png" alt="logo" id="logo">
+                <h2>Campo minato</h2>
+            </div>
+
+            <div>
+                <h2 id="score">Punti: 0</h2>
+            </div>
+            <div>
+                <label for="difficulty-select">Difficulty:</label>
+                <select name="difficulty" id="difficulty-select">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+                <button id="play-btn">Play</button>
+            </div>
+
         </nav>
     </header>
     <!-- /Header -->
@@ -39,11 +48,8 @@
 
     <!-- footer -->
     <footer class="flex">
-        <div>
-            <span>Made with</span>
-            <a href="https://boolean.careers/">By Boolean</a>
-        </div>
-        <h4 id="score">Punti: 0</h4>
+        <span>Made with</span>
+        <a href="https://boolean.careers/">By Boolean</a>
     </footer>
     <!-- /footer -->
 

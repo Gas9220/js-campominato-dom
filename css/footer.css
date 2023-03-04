@@ -5,4 +5,5 @@ footer {
 footer span::after {
     content: '\2764';
     margin-left: .3rem;
+    margin-right: .3rem;
 }

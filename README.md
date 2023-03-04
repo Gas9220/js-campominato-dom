@@ -86,5 +86,7 @@ Svolgimento seconda parte ----------------------------------
 
 6. Creo una variabile che conterrà i valori delle bombe
 7. Creo una variabile che conterrà il punteggio dell'utente
+8. Nella funzione che setta il gioco, creo l'array di bombe
+9. Creo una funzione che resetta l'interfaccia, azzerando lo score e svuotanto il container di box
 
 ------------------------------------------------------------
