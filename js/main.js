@@ -33,7 +33,7 @@ function maxInt(level) {
 // Funzione che permette di riempire un array con un tot di numeri casuali
 function fillArrayOfNumbers(level, totNumbers) {
     // Creo una costante che contiene il numero più alto che è possibile nell'array
-    const maxInt = maxInt(level);
+    const max = maxInt(level);
 
     // Creo un array che conterra i numeri casuali
     let numbers = [];
@@ -41,7 +41,7 @@ function fillArrayOfNumbers(level, totNumbers) {
     // Eseguo queste operazioni....
     do {
         // Creo un numero casuale da 1 al massimo intero
-        const randomNumber = randomInt(1, maxInt);
+        const randomNumber = randomInt(1, max);
         // Se l'array non contiene già il numero, lo aggiungo
         if (!numbers.includes(randomNumber)) {
             numbers.push(randomNumber);
@@ -90,7 +90,7 @@ function boxClickBehavior(bombs, boxTextContent, boxElement) {
     if (isIncluded(bombs, boxTextContent)) {
         // Prendo tutti i box e il suo contenuto
         const boxes = document.querySelectorAll('.box');
-        const boxContent = document.querySelectorAll('.box-content')
+        const boxContent = document.querySelectorAll('.box-content');
 
         // Faccio un ciclo for sui box
         for (let i = 0; i < boxes.length; i++) {
@@ -98,32 +98,33 @@ function boxClickBehavior(bombs, boxTextContent, boxElement) {
             for (let y = 0; y < bombs.length; y++) {
                 // Aggiungo a tutti i box che hanno valore uguale alla bomba, la classe css per colorarli di rosso
                 if (bombs[y] === Number(boxContent[i].innerHTML)) {
-                    boxes[i].classList.add('bomb-box')
+                    boxes[i].classList.add('bomb-box');
                 }
             }
             // Disabilito tutti i box
-            boxes[i].classList.add('disabled')
+            boxes[i].classList.add('disabled');
         }
     } else {
         // se il valore cliccato non è uguale ad un valore contenuto della bomba
         boxElement.classList.add('box-clicked'); // Cambio il background in blu
-        score++ // aumento lo score
-        scoreElement.innerHTML = `Punti: ${score}` // Aggiorno lo score a schermo
+        score++; // aumento lo score
+        scoreElement.innerHTML = `Punti: ${score}`; // Aggiorno lo score a schermo
     }
 }
 
 // Funzione che permette di creare i box
-function createBox(boxTextContent, level) {
+function createBox(boxTextContent, level, bombs) {
     // Creo un div
     const boxElement = document.createElement('div');
     // Gli assegno la classe box
     boxElement.classList.add('box');
 
     // Aggiungo al box la classe css che configura la width dei box
-    setBoxWidth(level, boxElement)
+    setBoxWidth(level, boxElement);
 
     // Creo uno span
     const boxSpanElement = document.createElement('span');
+    boxSpanElement.classList.add('box-content');
     // Inserisco dentro lo span l'argomento passato alla funzione
     boxSpanElement.innerHTML = boxTextContent;
 
@@ -151,24 +152,32 @@ function createGrid(boxNumber, container, level, bombs) {
 }
 
 // Funzione che crea la griglia in base al livello
-function performGameSettings(level, container, bombs) {
-    // svuoto il container se prima era stato già riempito
-    container.innerHTML = "";
+function performGameSettings(level, container) {
+    // faccio un reset
+    reset(container);
+
+    // Creo l'array che contiene le bombe
+    const bombs = fillArrayOfNumbers(level, 16)
 
     // Faccio uno switch sul livello
     switch (level) {
         case "easy": // Se il livello è easy
             createGrid(100, container, level, bombs);
             break;
-        case "medium":
+        case "medium": // Se il livello è medium
             createGrid(81, container, level, bombs)
             break;
-        case "hard":
+        case "hard": // Se il livello è hard
             createGrid(49, container, level, bombs)
             break;
         default:
             break;
     }
+}
+
+function reset(container) {
+    score = 0; // Azzero lo score
+    container.innerHTML = ""; // Azzero i box
 }
 
 // -------------------------------
@@ -177,9 +186,7 @@ function performGameSettings(level, container, bombs) {
 const containerElement = document.querySelector('.container');
 const playBtn = document.getElementById('play-btn');
 const selectElement = document.querySelector('select');
-
-// Array di bombe
-let bombs = [];
+const scoreElement = document.getElementById('score');
 
 // Punteggio utente
 let score = 0;

@@ -84,4 +84,7 @@ Svolgimento seconda parte ----------------------------------
  - Aumento lo score
  - Aggiorno l'interfaccia utente con il nuovo score
 
+6. Creo una variabile che conterrà i valori delle bombe
+7. Creo una variabile che conterrà il punteggio dell'utente
+
 ------------------------------------------------------------
